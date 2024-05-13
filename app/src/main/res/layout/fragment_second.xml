@@ -5,9 +5,40 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_margin="16dp"
     android:foregroundTint="@color/design_default_color_primary"
     tools:context=".SecondFragment">
 
+
+        <TextView
+            android:id="@+id/millisecondsText"
+            android:layout_width="171dp"
+            android:layout_height="71dp"
+            android:fontFamily="sans-serif-thin"
+            android:text="@string/default_milliseconds"
+            android:textAlignment="center"
+            android:textColor="@color/color_primary"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/circleTimer"
+            app:layout_constraintEnd_toEndOf="@+id/secondsText"
+            app:layout_constraintStart_toStartOf="@+id/secondsText"
+            app:layout_constraintTop_toBottomOf="@+id/secondsText" />
+
+        <TextView
+            android:id="@+id/secondsText"
+            android:layout_width="237dp"
+            android:layout_height="222dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="@string/default_seconds"
+            android:textColor="@color/color_primary"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/millisecondsText"
+            app:layout_constraintEnd_toEndOf="@+id/circleTimer"
+            app:layout_constraintStart_toStartOf="@+id/circleTimer"
+            app:layout_constraintTop_toTopOf="@+id/circleTimer"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <com.kalinasoft.stretchtimer.CircleTimer
             android:id="@+id/circleTimer"
@@ -20,5 +51,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:maxTime="2"
             app:progressBarThickness="4dp"
-            app:progressbarColor="@color/design_default_color_primary" />
+            app:progressbarColor="@color/color_primary" />
 </androidx.constraintlayout.widget.ConstraintLayout>

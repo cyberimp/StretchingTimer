@@ -44,4 +44,6 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="action_add_training">Add training</string>
+    <string name="default_seconds">60</string>
+    <string name="default_milliseconds">.000</string>
 </resources>

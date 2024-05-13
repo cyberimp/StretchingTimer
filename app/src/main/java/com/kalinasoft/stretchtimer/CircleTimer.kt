@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import kotlin.math.abs
 import kotlin.math.min
 
 
@@ -14,8 +15,20 @@ class CircleTimer @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private var strokeWidth = 4f
-    private var maxTime = 2
-    private var curTime = 1
+    private var maxTime = 2.0f
+        set(value) {
+            field = value
+            invalidate()
+        }
+    private var curTime = 1.0f
+        set(value) {
+            var a = abs(value)
+            if (a > maxTime){
+                a = maxTime
+            }
+            field = a
+            invalidate()
+        }
 
     private val startAngle = -90
     private var color = Color.DKGRAY
@@ -37,8 +50,8 @@ class CircleTimer @JvmOverloads constructor(
                 R.styleable.CircleTimer_progressBarThickness,
                 strokeWidth
             )
-            maxTime = typedArray.getInt(R.styleable.CircleTimer_maxTime, maxTime)
-            curTime = typedArray.getInt(R.styleable.CircleTimer_curTime, curTime)
+            maxTime = typedArray.getInt(R.styleable.CircleTimer_maxTime, maxTime.toInt()).toFloat()
+            curTime = typedArray.getInt(R.styleable.CircleTimer_curTime, curTime.toInt()).toFloat()
             color = typedArray.getInt(R.styleable.CircleTimer_progressbarColor, color)
 
         } finally {
@@ -76,7 +89,8 @@ class CircleTimer @JvmOverloads constructor(
         super.onDraw(canvas)
 
         canvas.drawOval(rectF!!, backgroundPaint!!)
-        val angle: Float = 360 * curTime.toFloat() / maxTime.toFloat()
+        val angle: Float = 360 * curTime / maxTime
+
         canvas.drawArc(rectF!!, startAngle.toFloat(), angle, false, foregroundPaint!!)
     }
 }

@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import kotlin.math.abs
 import kotlin.math.min
 
 
@@ -22,22 +21,17 @@ class CircleTimer @JvmOverloads constructor(
         }
     private var curTime = 1.0f
         set(value) {
-            var a = abs(value)
-            if (a > maxTime){
-                a = maxTime
-            }
-            field = a
+            field = value.coerceIn(0.0f..maxTime)
             invalidate()
         }
 
     private val startAngle = -90
     private var color = Color.DKGRAY
-    private var rectF: RectF? = null
-    private var backgroundPaint: Paint? = null
-    private var foregroundPaint: Paint? = null
+    private var rectF: RectF = RectF()
+    private var backgroundPaint: Paint
+    private var foregroundPaint: Paint
 
     init {
-        rectF = RectF()
         val typedArray = context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.CircleTimer,
@@ -59,18 +53,18 @@ class CircleTimer @JvmOverloads constructor(
         }
 
         backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        backgroundPaint!!.color = adjustAlpha(color, 0.3f)
-        backgroundPaint!!.style = Paint.Style.STROKE
-        backgroundPaint!!.strokeWidth = strokeWidth
+        backgroundPaint.color = adjustAlpha(color)
+        backgroundPaint.style = Paint.Style.STROKE
+        backgroundPaint.strokeWidth = strokeWidth
 
         foregroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        foregroundPaint!!.color = color
-        foregroundPaint!!.style = Paint.Style.STROKE
-        foregroundPaint!!.strokeWidth = strokeWidth
+        foregroundPaint.color = color
+        foregroundPaint.style = Paint.Style.STROKE
+        foregroundPaint.strokeWidth = strokeWidth
     }
 
-    private fun adjustAlpha(color: Int, factor: Float): Int {
-        val alpha = Math.round(Color.alpha(color) * factor)
+    private fun adjustAlpha(color: Int): Int {
+        val alpha = Math.round(Color.alpha(color) * 0.3f)
         val red = Color.red(color)
         val green = Color.green(color)
         val blue = Color.blue(color)
@@ -82,15 +76,15 @@ class CircleTimer @JvmOverloads constructor(
         val width = getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
         val a = min(width, height)
         setMeasuredDimension(a, a)
-        rectF?.set(0 + strokeWidth / 2, 0 + strokeWidth / 2, a - strokeWidth / 2, a - strokeWidth / 2)
+        rectF.set(0 + strokeWidth / 2, 0 + strokeWidth / 2, a - strokeWidth / 2, a - strokeWidth / 2)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas.drawOval(rectF!!, backgroundPaint!!)
+        canvas.drawOval(rectF, backgroundPaint)
         val angle: Float = 360 * curTime / maxTime
 
-        canvas.drawArc(rectF!!, startAngle.toFloat(), angle, false, foregroundPaint!!)
+        canvas.drawArc(rectF, startAngle.toFloat(), angle, false, foregroundPaint)
     }
 }

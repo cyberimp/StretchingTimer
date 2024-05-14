@@ -14,12 +14,13 @@ class CircleTimer @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private var strokeWidth = 4f
-    private var maxTime = 2.0f
+    var maxTime = 2.0f
         set(value) {
             field = value
+            curTime = curTime.coerceIn(0.0f..value)
             invalidate()
         }
-    private var curTime = 1.0f
+    var curTime = 1.0f
         set(value) {
             field = value.coerceIn(0.0f..maxTime)
             invalidate()
@@ -85,6 +86,6 @@ class CircleTimer @JvmOverloads constructor(
         canvas.drawOval(rectF, backgroundPaint)
         val angle: Float = 360 * curTime / maxTime
 
-        canvas.drawArc(rectF, startAngle.toFloat(), angle, false, foregroundPaint)
+        canvas.drawArc(rectF, startAngle.toFloat(), -angle, false, foregroundPaint)
     }
 }

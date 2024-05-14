@@ -8,7 +8,7 @@
     android:layout_gravity="center"
     android:layout_margin="16dp"
     android:foregroundTint="@color/design_default_color_primary"
-    tools:context=".SecondFragment">
+    tools:context=".TimerFragment">
 
 
         <TextView

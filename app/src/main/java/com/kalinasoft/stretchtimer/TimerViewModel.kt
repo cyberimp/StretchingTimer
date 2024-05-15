@@ -8,11 +8,13 @@ class TimerViewModel(time: Float): ViewModel() {
     private var _startTime: Long = 0L
 
     val timer = liveData {
-        emit(time)
+        emit(TimerState(time.toInt(), time))
         _startTime = System.currentTimeMillis()
         while (true) {
             delay(16)
-            emit((time - (System.currentTimeMillis()-_startTime)/1000f).coerceAtLeast(0f))
+            emit(TimerState(
+                time.toInt(),
+                (time - (System.currentTimeMillis()-_startTime)/1000f).coerceAtLeast(0f)))
         }
     }
 }

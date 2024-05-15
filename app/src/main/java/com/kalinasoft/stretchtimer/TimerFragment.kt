@@ -5,13 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.kalinasoft.stretchtimer.databinding.FragmentSecondBinding
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.subscribe
 import java.util.Locale
 import kotlin.math.floor
 
@@ -27,6 +23,7 @@ class TimerFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var timerViewModel: TimerViewModel? = null
+    private var maxTimer: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,18 +34,27 @@ class TimerFragment : Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        timerViewModel = TimerViewModel(60f)
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.circleTimer.maxTime = 60f
-        timerViewModel = TimerViewModel(60f)
-        val timeObserver = Observer<Float>  {
-            val seconds: String = floor(it).toInt().toString()
-            val millis: String = String.format(Locale.US,"%03d", floor((it-floor(it))*1000).toInt())
+        val timeObserver = Observer<TimerState>  {
+
+            if (maxTimer!=it.maxValue){
+                maxTimer = it.maxValue
+                binding.circleTimer.maxTime = maxTimer.toFloat()
+            }
+            val seconds: String = floor(it.value).toInt().toString()
+            val millis: String = String.format(Locale.US,"%03d", floor((it.value-floor(it.value))*1000).toInt())
 
             binding.secondsText.text = seconds
             binding.millisecondsText.text = millis
-            binding.circleTimer.curTime = it
+            binding.circleTimer.curTime = it.value
         }
         view.findViewTreeLifecycleOwner()?.let { timerViewModel?.timer!!.observe(it, timeObserver) }
     }

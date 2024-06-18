@@ -46,4 +46,6 @@
     <string name="action_add_training">Add training</string>
     <string name="default_seconds">60</string>
     <string name="default_milliseconds">.000</string>
+    <string name="action_start">Start</string>
+    <string name="default_exercise_name">Exercise name</string>
 </resources>

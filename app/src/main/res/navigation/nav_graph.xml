@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.kalinasoft.stretchtimer.FirstFragment"
+        android:name="com.kalinasoft.stretchtimer.ListFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -25,4 +25,7 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <argument
+        android:name="exercise"
+        app:argType="com.kalinasoft.stretchtimer.Exercise" />
 </navigation>
